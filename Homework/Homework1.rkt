@@ -142,14 +142,35 @@
       ((null? ls) '())
         (equal? old (car ls)) 
         (cons new (cdr ls))
-        (cons (car ls) (subst-1st new old (cdr ls))))))
+        (cons (car ls) (subst-1st new old (cdr ls)))
+    )
+  )
+)
+
 ;; Exercise 2.14
+(define (insert-left-1st new old ls)
+  (cond
+   ((null? ls) '())
+   ((eq? old (car ls)) (cons new ls))
+   (else (cons (car ls) (insert-left-1st new old (cdr ls))))
+  )
+)
 
 ;; Exercise 2.15
+(define (list-of-first-items ls)
+  (if (null? ls) '()
+      (cons (caar ls) (list-of-first-items (cdr ls)))
+  )
+)
 
 ;; Exercise 2.16
+(define (replace new-item ls)
+  (if (null? ls) '() 
+    (cons new-item (replace new-item (cdr ls))))
+)
 
 ;; Exercise 2.18
+(define (remove-last) 0)
 
 
 (define list1 '(1 2 3 4 5 6))
