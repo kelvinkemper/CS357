@@ -79,6 +79,10 @@
     (if (zilch? n)
         plus
         (lambda (x y)
-          (if (zilch? y)
-              (pred n)
-              ((ackerman (pred n)) ((ackerman n ) x (pred y)) x))))))
+          (cond ((zilch? y) (pred n))
+                ((zilch? (pred y)) x)
+                (else
+                  ((ackerman (pred n)) ((ackerman n) x (pred y)) x)))))))
+
+
+;; vars 

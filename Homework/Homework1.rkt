@@ -23,11 +23,6 @@
 ;; c. 2/3
 ;; d. 0.6666666666666667
 
-(- 10 (- 8 (- 6 4)))
-(/ 40 (* 50 20))
-(/ 2 3)
-(+ (* 0.1 20) (/ 4 -3))
-
 ;; Exercise 1.4
 
 ;; (-(* 4 7) (+ 13 5))
@@ -36,11 +31,13 @@
 ;; (* 5 (+ 255 (* 537 (+ 98.3 (- 375 (* 2.5 153))))))
 
 ;; Exercise 1.5
+
 ;; a. a + ((B + y) - a)
 ;; b. (a * B) + (y * B)
 ;; c. (a - B) / (a - Y)
 
 ;; Exercise 1.6
+
 ;; a. (cons 'one (cons 'two (cons 'three (cons 'four '()))))
 ;; b. (cons 'one (cons (cons 'two (cons 'three (cons 'four '()))) '()))
 ;; c. (cons 'one (cons (cons 'two (cons 'three '())) (cons 'four '())))
@@ -49,12 +46,14 @@
 ;; e. (cons (cons (cons 'one '()) '()) '())
 
 ;; Exercise 1.10
+
 ;; a. #f
 ;; b. #t
 ;; c. #f
 ;; d. #t
 
 ;; Exercise 1.14
+
 ;; a. #t
 ;; b. #f
 ;; c. #f
@@ -125,7 +124,7 @@
   (lambda (item ls)
     (if (null? ls) ;; if the list is null return list
     ls
-    (if (eq? (car ls) item) ;; check car of list to see if that matches item
+    (if (equal? (car ls) item) ;; check car of list to see if that matches item
         (cdr ls)
         (cons (car ls) (remove-1st item (cdr ls)))))
     )
@@ -140,37 +139,47 @@
   (lambda (new old ls)
     (cond
       ((null? ls) '())
-        (equal? old (car ls)) 
-        (cons new (cdr ls))
-        (cons (car ls) (subst-1st new old (cdr ls)))
+      (equal? old (car ls)) 
+      (cons new (cdr ls))
+      (cons (car ls) (subst-1st new old (cdr ls)))
     )
   )
 )
 
 ;; Exercise 2.14
-(define (insert-left-1st new old ls)
+(define insert-left-1st
+  (lambda (new old ls)
   (cond
    ((null? ls) '())
    ((eq? old (car ls)) (cons new ls))
-   (else (cons (car ls) (insert-left-1st new old (cdr ls))))
-  )
-)
+   (else (cons (car ls) (insert-left-1st new old (cdr ls)))))))
 
 ;; Exercise 2.15
-(define (list-of-first-items ls)
+(define list-of-first-items
+ (lambda (ls)
   (if (null? ls) '()
       (cons (caar ls) (list-of-first-items (cdr ls)))
   )
-)
+))
 
 ;; Exercise 2.16
-(define (replace new-item ls)
+(define replace
+  (lambda (new-item ls)
   (if (null? ls) '() 
-    (cons new-item (replace new-item (cdr ls))))
-)
+    (cons new-item (replace new-item (cdr ls))))  
+))
 
 ;; Exercise 2.18
-(define (remove-last) 0)
+(define helper-remove-1st ;;removes top level first top level occurence of given item
+  (lambda (item ls)
+    (cond
+      ((null? ls) '())
+      ((equal? (car ls) item) (cdr ls))
+      (else (cons (car ls) (helper-remove-1st item (cdr ls)))))))
 
+;; using the reverse function: reverse list, use helper-remove-1st, 
+;; then reverse list back to original order
+(define remove-last 
+  (lambda (x ls)
+   (reverse (helper-remove-1st x (reverse ls)))))
 
-(define list1 '(1 2 3 4 5 6))

@@ -7,22 +7,56 @@
 ;; Problem 4.4
 ;; (deepen-1 '(a b c d)) ==> '((a) (b) (c) (d))
 ;; (deepen-1 '()) ==> '()
-(define deepen-1 0)
+(define deepen-1
+  (lambda (ls)
+   (if (null? ls)
+       '()
+        (cons (list (car ls)) (deepen-1 (cdr ls))))))
 
 ;; Problem 4.6
 ;; (insert-left-all 'z 'a '(a ((b a) ((a (c)))))) ==> '(z a ((b z a) ((z a (c)))))
 ;; (insert-left-all 'z 'a '()) ==> '()
-(define insert-left-all 0)
+
+;; condition:
+;; check if list is null return '()
+;; check if old = first element of list return '(new old (recusively rest of list)))
+;; check if first elemnt of list is a pair
+(define insert-left-all
+  (lambda (new old ls)
+    (cond
+      ((null? ls) '())
+
+      ((equal? (car ls) old) 
+        (cons new (cons old (insert-left-all new old (cdr ls)))))
+
+      ((pair? (car ls))
+        (cons (insert-left-all new old (car ls))
+              (insert-left-all new old (cdr ls))))
+
+      (else
+        (cons (car ls) (insert-left-all new old (cdr ls)))))))
+
 
 ;; Problem 4.10
 ;; (leftmost '((a b) (c (d e))) ==> 'a
 ;; (leftmost '(() a)) ==> '()
-(define leftmost 0)
+(define leftmost
+  (lambda (ls)
+    (cond
+      ((null? ls) '())
+      ((pair? (car ls)) (leftmost (car ls)))
+      (else (car ls)))))
 
 ;; Problem 4.11
 ;; (rightmost '((((((b (c)))))))) ==> 'c
 ;; (rightmost '(a ())) ==> '()
-(define rightmost 0)
+(define rightmost
+  (lambda (ls)
+    (cond
+      ((null? ls) '())
+      ((and (pair? (car ls)) (null? (cdr ls))) (rightmost (car ls)))
+      ((null? (cdr ls)) (car ls))
+      (else (rightmost (cdr ls))))))
 
 ;; Problem 4.18
 ;; (length-it '(1 2 3 4 (5 6 7 8))) ==> 5
@@ -71,3 +105,35 @@
 ;; (cos 1) ==> something that is approximately 0.5403
 ;; (cos 1.57079) ==> something that is approximately 1
 (define cos 0)
+
+
+(deepen-1 '(a b c d))
+(deepen-1 '((a b) (c (d e)) f))
+(deepen-1 '())
+
+(insert-left-all 'z 'a '(a ((b a) ((a (c))))))
+; Value: (z a ((b z a) ((z a (c)))))
+
+(insert-left-all 'z 'a '(((a))))
+; Value: (((z a)))
+
+(insert-left-all 'z 'a '())
+; Value: ()
+
+(leftmost '((a b) (c (d e))))
+; Value: a
+
+(leftmost '((((c ((e f) g) h)))))
+; Value: c
+
+(leftmost '(() a))
+; Value: ()
+
+(rightmost '((a b) (d (c d (f (g h) i) m n) u) v))
+; Value: v
+
+(rightmost '((((((b (c))))))))
+; Value: c
+
+(rightmost '(a ()))
+; Value: ()
