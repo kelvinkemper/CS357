@@ -4,6 +4,13 @@
 ;; Due Wed, Feb 15
 ;; Kelvin Kemper
 
+(define make-deep
+  (lambda (proc)
+    (lambda (ls)
+      (if (pair? ls)
+          (proc (map (make-deep proc) ls))
+          ls))))
+
 ;; Problem 4.4
 ;; (deepen-1 '(a b c d)) ==> '((a) (b) (c) (d))
 ;; (deepen-1 '()) ==> '()
@@ -118,7 +125,16 @@
 ;; Infix calculator for + - * /
 ;; (calculator '(1 + (2 * ((3 + 4) - 5)))) ==> 5
 ;; (calculator '(5 / (5 / ((5 / 5) / 5)))) ==> 1/5
-(define calculator 0)
+(define calculator
+  (make-deep
+   (lambda (ls)
+     (let ((op (cadr ls)))
+       ((cond ((eq? op '+) +)
+              ((eq? op '-) -)
+              ((eq? op '*) *)
+              (else /))
+        (car ls)
+	(caddr ls))))))
 
 ;; Infix-to-prefix expression converter
 ;; (infix->prefix '(1 + (2 * ((3 + 4) - 5)))) ==> '(+ 1 (* 2 (- (+ 3 4) 5)))
@@ -162,19 +178,15 @@
 
 (leftmost '((a b) (c (d e))))
 ; Value: a
-
 (leftmost '((((c ((e f) g) h)))))
 ; Value: c
-
 (leftmost '(() a))
 ; Value: ()
 
 (rightmost '((a b) (d (c d (f (g h) i) m n) u) v))
 ; Value: v
-
 (rightmost '((((((b (c))))))))
 ; Value: c
-
 (rightmost '(a ()))
 ; Value: ()
 
@@ -197,3 +209,8 @@
 ;; 3
 (occurs-it 'a '(b c a (b a) c a)) 
 ;; 2
+
+(calculator '(1 + (2 * ((3 + 4) - 5))))
+;;5
+(calculator '(5 / (5 / ((5 / 5) / 5))))
+;;1/5
