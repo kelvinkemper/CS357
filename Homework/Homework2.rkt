@@ -40,6 +40,9 @@
 ;; Problem 4.10
 ;; (leftmost '((a b) (c (d e))) ==> 'a
 ;; (leftmost '(() a)) ==> '()
+;; cond: check if list null, return '()
+;;       check 1st element is pair?, return recursive call of first element
+;; else: return first element of list
 (define leftmost
   (lambda (ls)
     (cond
@@ -47,9 +50,14 @@
       ((pair? (car ls)) (leftmost (car ls)))
       (else (car ls)))))
 
+
 ;; Problem 4.11
 ;; (rightmost '((((((b (c)))))))) ==> 'c
 ;; (rightmost '(a ())) ==> '()
+;; conds: list null? return empty list
+;;        check if 1st element is pair AND if cdr is null? then reduce down 
+;;        check null of cdr, return car ls
+;; else:  reduce ls
 (define rightmost
   (lambda (ls)
     (cond
@@ -61,19 +69,51 @@
 ;; Problem 4.18
 ;; (length-it '(1 2 3 4 (5 6 7 8))) ==> 5
 ;; (length-it '()) ==> 0
-(define length-it 0)
+;; conds: ls is empty list return 0 or add1 and 
+;; else:  + 1 then recursively call cdr of ls
+(define length-it
+  (lambda (ls)
+    (cond
+      ((null? ls) 0)
+      (else (add1 (length (cdr ls)))))))
 
 ;; Problem 4.19
 ;; (mk-asc-list-of-ints 5) ==> '(1 2 3 4 5)
 ;; (mk-desc-list-of-ints 5) ==> '(5 4 3 2 1)
-(define mk-asc-list-of-ints 0)
-(define mk-desc-list-of-ints 0)
+;; not sure how to use mk-asc-list-of-ints first but it uses 
+;; mk-desc-list-of-ints as a helper but reversing it
+(define mk-asc-list-of-ints
+  (lambda (n) 
+     (reverse (mk-desc-list-of-ints n))))
+
+(define mk-desc-list-of-ints
+  (lambda (n)
+    (if (= n 0)
+      '()
+      (cons n (mk-desc-list-of-ints (- n 1))))))
 
 ;; Problem 4.20
 ;; (occurs 'a '(a b a c a d)) ==> 3
 ;; (occurs 'a '(b c a (b a) c a)) ==> 2
-(define occurs 0)
-(define occurs-it 0)
+(define occurs
+  (lambda (n ls)
+      (cond
+        ((null? ls) 0)
+        ((equal? n (car ls))
+            (add1 (occurs n (cdr ls))))
+        (else 
+            (occurs n (cdr ls))))))
+
+(define occurs-it
+  (lambda (n ls)
+    (occurs-it-helper n 0 ls)))
+
+(define occurs-it-helper 
+  (lambda (n acc ls)
+    (cond
+      ((null? ls) acc)
+      ((equal? n (car ls)) (occurs-it-helper n (+ acc 1) (cdr ls)))
+      (else (occurs-it-helper n  acc (cdr ls))))))
 
 ;; Infix calculator for + - * /
 ;; (calculator '(1 + (2 * ((3 + 4) - 5)))) ==> 5
@@ -107,17 +147,17 @@
 (define cos 0)
 
 
-(deepen-1 '(a b c d))
-(deepen-1 '((a b) (c (d e)) f))
-(deepen-1 '())
+;(deepen-1 '(a b c d))
+;(deepen-1 '((a b) (c (d e)) f))
+;(deepen-1 '())
 
-(insert-left-all 'z 'a '(a ((b a) ((a (c))))))
+;(insert-left-all 'z 'a '(a ((b a) ((a (c))))))
 ; Value: (z a ((b z a) ((z a (c)))))
 
-(insert-left-all 'z 'a '(((a))))
+;(insert-left-all 'z 'a '(((a))))
 ; Value: (((z a)))
 
-(insert-left-all 'z 'a '())
+;(insert-left-all 'z 'a '())
 ; Value: ()
 
 (leftmost '((a b) (c (d e))))
@@ -137,3 +177,23 @@
 
 (rightmost '(a ()))
 ; Value: ()
+
+(length-it '(1 2 3 4 (5 6 7 8)))
+; 5
+(length-it '())
+; 0
+
+(mk-asc-list-of-ints 5)
+;; '(1 2 3 4 5)
+(mk-desc-list-of-ints 5) 
+;; '(5 4 3 2 1)
+
+(occurs 'a '(a b a c a d)) 
+;; 3
+(occurs 'a '(b c a (b a) c a)) 
+;; 2
+
+(occurs-it 'a '(a b a c a d)) 
+;; 3
+(occurs-it 'a '(b c a (b a) c a)) 
+;; 2
