@@ -6,19 +6,33 @@
 ;; NOTE: Test cases not finished yet. Coming soon!
 
 ;; Exercise 7.2
-;; ((compose3 add1 sub1 add1) 5) ==> 6
-;; ((compose3 (lambda (x) (* x x)) (lambda (x) (* x x)) add1) 3) ==> 256
-(define compose3 0)
+(define compose3
+  (lambda (f g h)
+    (lambda (x)
+      (f (g (h x))))))
+
+((compose3 add1 sub1 add1) 5)
+;; 6
+((compose3 (lambda (x) (* x x)) (lambda (x) (* x x)) add1) 3)
+;; 256      
 
 ;; Exercise 7.3
-;; ((compose-many add1 add1 add1 add1 add1) 5) ==> 10
-;; ((compose-many) 'batman) ==> 'batman
-(define compose-many 0)
+(define compose-many
+  (lambda args
+    (if (null? args)
+          (lambda (x) x)
+        (compose
+          (car args) (apply compose-many (cdr args))))))
+
+((compose-many add1 add1 add1 add1 add1) 5)
+;; 10
+((compose-many) 'batman)
+;; 'batman
 
 ;; Exercise 7.6
+(define map-first-two 0)
 ;; (map-first-two + '(5 4 3 2 1)) ==> '(9 7 5 3)
 ;; (map-first-two cons '(1 (2 3) (4 5) (6 7 8))) ==> '((1 2 3) ((2 3) 4 5) ((4 5) 6 7 8))
-(define map-first-two 0)
 
 ;; Exercise 7.7
 ;; (reduce + '(5 -1 3 7 2 3 5)) ==> 24
