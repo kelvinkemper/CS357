@@ -39,3 +39,4 @@
                     (map (lambda (ls) (apply + ls)) lss)
                     lss))))
 
+(define lss (powerset ))

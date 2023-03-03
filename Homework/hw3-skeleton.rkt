@@ -1,9 +1,7 @@
 #lang racket
 
 ;; CS 357 Homework #3, Spring 2023
-;; YOUR NAME HERE
-
-;; NOTE: Test cases not finished yet. Coming soon!
+;; Kelvin Kemper
 
 ;; Exercise 7.2
 (define compose3
@@ -30,9 +28,16 @@
 ;; 'batman
 
 ;; Exercise 7.6
-(define map-first-two 0)
-;; (map-first-two + '(5 4 3 2 1)) ==> '(9 7 5 3)
-;; (map-first-two cons '(1 (2 3) (4 5) (6 7 8))) ==> '((1 2 3) ((2 3) 4 5) ((4 5) 6 7 8))
+;; use plus procedure
+(define map-first-two
+  (lambda (proc ls)
+    (if (null? (cdr ls))
+        '()
+        (cons (proc (car ls) (car (cdr ls))) (map-first-two proc (cdr ls))))))
+(map-first-two + '(5 4 3 2 1))
+;;'(9 7 5 3)
+(map-first-two cons '(1 (2 3) (4 5) (6 7 8)))
+;'((1 2 3) ((2 3) 4 5) ((4 5) 6 7 8))
 
 ;; Exercise 7.7
 ;; (reduce + '(5 -1 3 7 2 3 5)) ==> 24

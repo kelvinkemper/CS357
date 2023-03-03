@@ -25,12 +25,14 @@
 ;; let's create a function that takes in a list and a number we want to add to it all
 
 (define ls '(1 3 5 7 9))
-
+ 
 (define map
   (lambda (proc ls)
     (if (null? ls)
         '()
         (cons (proc (car ls)) (map proc (cdr ls))))))
+
+(map + '(5 4 3 2 1))
 
 ;; rather than using (map add1 ls) we can use
 ;; (map (lambda (num) (+ num 2) ls)) to add 2 to each item
