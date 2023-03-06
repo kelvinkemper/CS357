@@ -123,7 +123,7 @@
 ;; ==> '(() (-1) (-1 1) (-1 1 -1 1))
 
 ;; Exercise 7.30 NOT DONE
-(display "Exercise 7.30 not done\n")
+;(display "Exercise 7.30 not done\n")
 (define book-deep-recur
   (lambda (seed item-proc list-proc)
     (letrec
@@ -140,29 +140,41 @@
   )
 )
 
-(define reverse-all-deep
+(define reverse-all-book
   (lambda (ls)
     (if (null? ls)
         '()
-        (append (reverse-all-deep (cdr ls))
+        (append (reverse-all-book (cdr ls))
                 (list (if (pair? (car ls))
-                          (reverse-all-deep (car ls))
+                          (reverse-all-book (car ls))
                           (car ls)))))))
 
-;(define reverse-all
-;  (lambda (ls)
-;    (book-deep-recur '() (lambda (x y) (append y (list x)))
-;                    (lambda (x y) (append y (list x))))))
+(define reverse-all
+  (lambda (ls)
+    (book-deep-recur '()
+                     (lambda (x y) (append y (list (if (pair? (car ls)) x (car ls)))))
+                     (lambda (x y) x))))
+                         
 ;(reverse-all '((1 2 3) (4 5) ((6 7 8) (9 10 11))))
 ;;   ==> '(((11 10 9) (8 7 6)) (5 4) (3 2 1))
 ;; (reverse-all '(x (y (z (((a) b) c)))))
 ;;   ==> '((((c (b (a))) z) y) x)
 
 ;; Exercise 7.31
-(display "Exercise 7.31 not done\n")
+(define book-flat-recur1
+  (lambda (seed list-proc)
+    (letrec
+      ((helper
+          (lambda (ls)
+            (if (null? ls)
+                seed
+                (list-proc (car ls) (helper (cdr ls)))))))
+      helper)))
+
+;(define flat-recur (book-deep-recur flat-recur list-proc item-proc))
+
 ;; ((flat-recur 1 +) '(1 2 3 4)) ==> 11
 ;; ((flat-recur '(a b c) cons) '(w x y z)) ==> '(w x y z a b c)
-(define flat-recur 0)
 
 ;; Problem 1
 (define tail-recur
@@ -180,7 +192,7 @@
 ;(map iota '(1 2 3 4))
 ; ==> '((1) (1 2) (1 2 3) (1 2 3 4))
 
-;; Problem 2
+;; Problem 3
 (define disjunction2
   (lambda (pred1 pred2)
     (lambda (x)
@@ -194,13 +206,10 @@
 ;; Problem 3 
 (display "Problem 3 not done\n")
 ;; variadic function
-(define disjunction
-  (lambda preds
-    (lambda (x)
-      (cond
-        (((car preds) x))
-        (else
-          (cdr preds))))))
+;(define disjunction
+;  (lambda preds
+;    (lambda (x))))
+
 
 ;((disjunction number? odd?) '(a (b c d)))
 ;(map (disjunction pair? number? null?) '(a (b c d) e () f () g (((h))) 1))
@@ -215,7 +224,7 @@
 ;(matrix-map (lambda (x) (* x 2)) '(() () () ()))
 ;;   ==> '(() () () ())
 
-;; Problem 5
+;; Problem 5 done
 (define fold
       (lambda (seed proc)
         (letrec
@@ -245,7 +254,7 @@ pattern)))
 ;(delete-duplicates '(x y x x y x))
 ; ==> '(x y) OR '(y x)
 
-(display "Assoc not done\n")
+;; for testing
 (define assoc-helper
   (lambda (item lst)
     (cond
@@ -254,16 +263,19 @@ pattern)))
       (else
         (assoc-helper item (cdr lst))))))
 
-;(assoc-helper 'b '((a 3) (b 3) (c 4) (b 5)))
-;(define assoc
-;  (lambda (x ls)
-;    (let ((assoc-helper (lambda () _____))
- ;         (assoc-final (fold #f assoc-helper)))
- ;       (assoc-final ls))))
-
+(define assoc
+  (lambda (item ls)
+    (letrec ((assoc-helper
+               (lambda (fst ls2)
+                  (if (equal? (car fst) item)
+                      fst
+                      ls2)))
+          (assoc-final (fold #f assoc-helper)))
+        (assoc-final ls))))
 
 ;(assoc 'a '((x 4) (y 5) (z 6) (a 7) (b 8) (a 9)))
 ;; ==> '(a 7)
+
 
 ;; Problem 6
 ;; Only use apply, select, map, filter, outer-product and iota
@@ -275,12 +287,8 @@ pattern)))
      (lambda (x) (pred (car x)))
       (map cons ls0 ls1))))))
 
-((select even?) (iota 8) '(a b c d e f g h))
+;((select even?) (iota 8) '(a b c d e f g h))
 ; (b d f h)
-
-(define make-row
-  (lambda (proc x ys)
-    (map (lambda (y) (proc x y)) ys)))
 
 (define outer-product
   (lambda (proc)
@@ -288,7 +296,7 @@ pattern)))
     (map (lambda (x)
        (map (lambda (y) (proc x y)) ys)) xs))))
 
-((outer-product *) '(1 2) '(3 4))
+;((outer-product *) '(1 2) '(3 4))
 
 (define length 
   (lambda (ls)
@@ -297,6 +305,7 @@ pattern)))
 (define sum-of-squares
   (lambda args
     (apply + (map (lambda (x) (* x x)) args))))
+
 
 (define avg
   (lambda args
@@ -318,6 +327,7 @@ pattern)))
    (apply +
     (map (lambda (x) (if (pred x) 1 0))
      ls)))))
+
 ;; (define list-ref 0)
 
 ;; (apply avg-fact (apply shortest (map iota '(5 20 7 3 23 7 8)))) ==> 3
