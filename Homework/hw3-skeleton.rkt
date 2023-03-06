@@ -3,7 +3,7 @@
 ;; CS 357 Homework #3, Spring 2023
 ;; Kelvin Kemper
 
-;; Exercise 7.2
+;; Exercise 7.2 done
 (define compose3
   (lambda (f g h)
     (lambda (x)
@@ -14,7 +14,7 @@
 ;((compose3 (lambda (x) (* x x)) (lambda (x) (* x x)) add1) 3)
 ;; 256      
 
-;; Exercise 7.3
+;; Exercise 7.3 done
 (define compose-many
   (lambda args
     (if (null? args)
@@ -27,7 +27,7 @@
 ;;((compose-many) 'batman)
 ;; 'batman
 
-;; Exercise 7.6
+;; Exercise 7.6 done
 ;; use plus procedure
 (define map-first-two
   (lambda (proc ls)
@@ -40,7 +40,7 @@
 ;;(map-first-two cons '(1 (2 3) (4 5) (6 7 8)))
 ;'((1 2 3) ((2 3) 4 5) ((4 5) 6 7 8))
 
-;; Exercise 7.7
+;; Exercise 7.7 done
 (define length1
   (lambda (lst)
     (cond 
@@ -58,7 +58,7 @@
 ;;(reduce * '(534 9549 201 59 11238 0 4848))
 ;; 0
 
-;; Exercise 7.8
+;; Exercise 7.8 done
 (define andmap
   (lambda (pred ls)
     (if (null? ls)
@@ -70,7 +70,7 @@
 ;(andmap (lambda (ls) (not (null? ls))) '((1 2 3) (4 5) (6 7) (8) (9 10)))
 ;#t
 
-;; Exercise 7.12
+;; Exercise 7.12 done
 (define curried*
  (lambda (n)
    (lambda (m)
@@ -122,7 +122,8 @@
 ;(map (mult-by-scalar -1) '(() (1) (1 -1) (1 -1 1 -1)))
 ;; ==> '(() (-1) (-1 1) (-1 1 -1 1))
 
-;; Exercise 7.30
+;; Exercise 7.30 NOT DONE
+(display "Exercise 7.30 not done\n")
 (define book-deep-recur
   (lambda (seed item-proc list-proc)
     (letrec
@@ -158,6 +159,7 @@
 ;;   ==> '((((c (b (a))) z) y) x)
 
 ;; Exercise 7.31
+(display "Exercise 7.31 not done\n")
 ;; ((flat-recur 1 +) '(1 2 3 4)) ==> 11
 ;; ((flat-recur '(a b c) cons) '(w x y z)) ==> '(w x y z a b c)
 (define flat-recur 0)
@@ -190,6 +192,7 @@
 ;   ==> '(#t #f #f #t #t #t)
 
 ;; Problem 3 
+(display "Problem 3 not done\n")
 ;; variadic function
 (define disjunction
   (lambda preds
@@ -242,6 +245,7 @@ pattern)))
 ;(delete-duplicates '(x y x x y x))
 ; ==> '(x y) OR '(y x)
 
+(display "Assoc not done\n")
 (define assoc-helper
   (lambda (item lst)
     (cond
