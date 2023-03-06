@@ -23,6 +23,7 @@
       (equal? value (car ls) #t)
       (else 
         (our-member? value (cdr ls))))))
+(our-member? 5 '(1 2 3 5))
 
 (define our-member?2
   (lambda (value ls)
@@ -30,7 +31,7 @@
       ((null? ls) #f)
       (else (or (equal? (car ls) value)
                 (our-member?2 value (cdr ls)))))))
-
+filter
 (define remove-1st
   (lambda (item ls)
     (cond
