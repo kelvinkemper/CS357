@@ -30,3 +30,7 @@
           (f x1 x2 x3 x4)))))))
 (display "curry4\n")
 (((((curry4 sum-of-squares) 1) 2) 3) 4)
+
+
+
+
