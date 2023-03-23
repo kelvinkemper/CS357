@@ -204,12 +204,14 @@
 ;   ==> '(#t #f #f #t #t #t)
 
 ;; Problem 3 
-(display "Problem 3 not done\n")
-;; variadic function
-;(define disjunction
-;  (lambda preds
-;    (lambda (x))))
-
+(define disjunction
+  (lambda preds
+    (lambda (x)
+      (let loop ((ps preds))
+          (cond
+            ((null? ps) #f)
+              ((or ((car ps) x) #f))
+              (else (loop (cdr ps))))))))
 
 ;((disjunction number? odd?) '(a (b c d)))
 ;(map (disjunction pair? number? null?) '(a (b c d) e () f () g (((h))) 1))
@@ -315,7 +317,8 @@ pattern)))
   (lambda args
     (/ (apply + (filter odd? args)) (apply + (map (lambda (x) 1) (filter odd? args))))))
 
-;; (define shortest 0)
+;(define shortest)
+
 
 (define avg-fact
   (lambda args
@@ -327,8 +330,8 @@ pattern)))
    (apply +
     (map (lambda (x) (if (pred x) 1 0))
      ls)))))
+;(define list-ref)
 
-;; (define list-ref 0)
 
 ;; (apply avg-fact (apply shortest (map iota '(5 20 7 3 23 7 8)))) ==> 3
 ;(apply sum-of-squares (list-ref (map iota (iota 20)) 13))

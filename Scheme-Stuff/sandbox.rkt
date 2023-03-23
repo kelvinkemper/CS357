@@ -73,7 +73,7 @@ pattern)))
 
 (define reverse-all
   (lambda (ls)
-    (book-deep-recur '() ls (lambda (x y) (append y (list (if (pair? (car ls)) x (car ls))))))
+    (book-deep-recur '()  (lambda (x y) (append y (list (if (pair? (car ls)) x (car ls))))))
                          ))
 
 (reverse-all '((1 2 3) (4 5) ((6 7 8) (9 10 11))))

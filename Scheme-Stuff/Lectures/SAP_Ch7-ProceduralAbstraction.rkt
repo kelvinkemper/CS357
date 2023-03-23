@@ -162,9 +162,7 @@
                 seed
                 (let ((a (car ls)))
                   (if (or (pair? a) (null? a))
-                      ;; if #t
                       (list-proc (helper a) (helper (cdr ls)))
-                      ;; else #f
                       (item-proc a (helper (cdr ls)))))))))
         helper)))
 
@@ -233,15 +231,16 @@
       ((helper
             (lambda (ls)
               (if (null? ls)
-                  '()
+                  '() ;; seed
                   (let ((a (car ls)))
                     (if (or (pair? a) (null? a))
-                          (cons (helper a) (helper (cdr ls)))
-                          (if (pred a)
-                              (cons a (helper (cdr ls)))
-                              (helper (cdr ls)))))))))
+                          (cons (helper a) (helper (cdr ls))) ;; list-proc
+                          (if (pred a) ;; item proc        if (pred x)
+                              (cons a (helper (cdr ls))) ;;(cons x y)  where y = (helper (cdr ls))
+                              (helper (cdr ls)))))))))   ;; else y
       helper)))
-((filter-in-all-c even?) '(2 4 1 2 5 6 8))
+
+;;((filter-in-all-c even?) '(2 4 1 2 5 6 8))
 
 (define filter-in-all-c-d
   (lambda (pred)
