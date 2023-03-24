@@ -77,3 +77,11 @@ pattern)))
                          ))
 
 (reverse-all '((1 2 3) (4 5) ((6 7 8) (9 10 11))))
+
+
+(define count
+   (let ((next 0))
+     (lambda ()
+       (let ((v next))
+         (set! next (+ next 1))
+         v))))

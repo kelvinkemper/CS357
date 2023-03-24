@@ -23,6 +23,7 @@
         (cons 0 '())
         (cons (car ls) (snoc-0 (cdr ls)))
         )))
+
 (snoc-0 '(1 2 3 4))
 
 (define snoc-0-f (fold cons (cons 0 '())))
@@ -37,6 +38,7 @@
 (define snoc
   (lambda (ls x)
     ((snoc-maker x) ls)))
+(snoc '(1 2 3) 34)
 
 (define take-while-even (fold (lambda (x y) (if (even? x) (cons x y) '())) '()))
 

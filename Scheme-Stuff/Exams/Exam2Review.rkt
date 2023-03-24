@@ -21,6 +21,13 @@
  (lambda (ls x)
     ((fold cons (list x)) ls)))
 
+(define snoc-2-n
+    (lambda (ls x)
+        (if (null? ls)
+        (cons x '())
+        (cons (car ls) (snoc-2-n (cdr ls) x)))))
+(snoc-2-n '(1 2 3) 'a)
+
 
 (define f (lambda (x) (append '(2 3 4 5 6) (cons x '()))))
 (define g (compose (lambda (ls) (cons 1 ls)) f))
