@@ -20,6 +20,7 @@ powerset (x:xs) = subset ++ (map (x :) subset)
 permutations' [] = [[]]
 permutations' xs = concat $ map (\x -> (map (x :) (permutations' (filter (/= x) xs)))) xs
 
+outerProduct :: (t1 -> t2 -> a) -> [t1] -> [t2] -> [[a]]
 outerProduct f xs ys = [[f x y | x <- xs] | y <- ys]
 --outerProduct (,) [1..5] ['a'..'f']
 --outerProduct (*) [1..5] [1..5]

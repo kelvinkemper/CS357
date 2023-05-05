@@ -25,5 +25,19 @@ myTakeWhile pred = foldr (\x ls -> if (pred x) then x:ls else []) []
 mySpan :: (a -> Bool) -> [a] -> ([a],[a])
 mySpan pred = foldr (\x (ls1,ls2) -> if (pred x) 
                         then (x:ls1,ls2)
-                        else ([],x:(ls1 ++ ls2)))
+                        else ([],x:(ls1 ++ ls2))) 
                         ([],[])
+
+data Lulz a = Lulz [[a]]
+lulz0 = Lulz [[1,2],[3,4]]
+lulz1 = Lulz [[4,3],[2,1]]
+
+
+mapLulz :: (a -> b) -> Lulz a -> Lulz b
+mapLulz f (Lulz xss) = Lulz (map (map f) xss)
+
+zipLulz :: Lulz a -> Lulz b -> Lulz (a, b)
+zipLulz (Lulz xss) (Lulz yss) = Lulz (zipWith zip xss yss)
+
+zipWithLulz :: (a -> b -> c) -> Lulz a -> Lulz b -> Lulz c
+zipWithLulz f (Lulz xss) (Lulz yss) = Lulz (zipWith (zipWith f) xss yss)
